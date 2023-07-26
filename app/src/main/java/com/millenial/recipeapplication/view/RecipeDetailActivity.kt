@@ -2,7 +2,6 @@ package com.millenial.recipeapplication.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -50,7 +49,6 @@ class RecipeDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val recipe: Recipe? = intent.getParcelableExtra<Recipe>("RECIPE", Recipe::class.java)
-        Log.i(TAG, "Recipe code: ${recipe!!.code}")
 
         recipeDetailViewModel.setRecipe(recipe)
         setContent {

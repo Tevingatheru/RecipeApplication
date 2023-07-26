@@ -3,7 +3,6 @@ package com.millenial.recipeapplication.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -63,7 +62,6 @@ class RecipeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         categoryName = intent.getStringExtra(CategoryActivity.categoryVarName)!!
 
-        Log.i(TAG, "Category name received: $categoryName")
 
         setContent {
             RecipeApplicationTheme {
@@ -94,7 +92,7 @@ fun ListView(recipes: List<Recipe>) {
     val launcher = rememberLauncherForActivityResult(
             contract = RecipeDetailActivityContract()
         ) {
-            Log.i(TAG, "Card clicked ${recipeCodeValue}")
+
         }
     val context = LocalContext.current
     val title = RecipeActivity.categoryName + " List"

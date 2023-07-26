@@ -3,14 +3,12 @@ package com.millenial.recipeapplication.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,10 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.millenial.recipeapplication.model.Category
-import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.TAG
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.categoryVarName
@@ -49,7 +44,6 @@ class CategoryActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "Category Activity opened")
 
         setContent {
             RecipeApplicationTheme {
@@ -72,7 +66,7 @@ fun View() {
     val launcher = rememberLauncherForActivityResult(
         contract = RecipeActivityContract()
     ) {
-        Log.i(TAG, "Card clicked $categoryVarName")
+
     }
 
     LazyColumn {
