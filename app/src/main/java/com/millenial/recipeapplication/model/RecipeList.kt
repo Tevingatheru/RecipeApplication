@@ -166,4 +166,3 @@ fun recipeListForSupper(): List<Recipe> {
         ) , CategoryTypes.SUPPER)
     )
 }
-

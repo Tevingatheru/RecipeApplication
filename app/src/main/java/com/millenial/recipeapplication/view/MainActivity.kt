@@ -18,38 +18,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.millenial.recipeapplication.SetUp
-import com.millenial.recipeapplication.model.Screen
 import com.millenial.recipeapplication.view.MainActivity.Companion.TAG
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.ui.theme.Purple40
-
 
 class MainActivity : ComponentActivity() {
     companion object {
         const val TAG = "Main"
     }
 
-    lateinit var navController: NavHostController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RecipeApplicationTheme {
-                navController = rememberNavController()
-                SetUp(navController = navController)
-
-                // A surface container using the 'background' color from the theme
-                Welcome(this, navController)
+                Welcome(this)
             }
         }
     }
 }
 
 @Composable
-fun Welcome(context: Context, navController: NavHostController) {
+fun Welcome(context: Context) {
     MaterialTheme(
         colorScheme = MaterialTheme.colorScheme.copy(
             primary = Purple40
@@ -67,9 +56,6 @@ fun Welcome(context: Context, navController: NavHostController) {
                     end = 20.dp,
                     bottom = 12.dp
                 ),
-//                onClick = {
-//                    navController.navigate(Screen.Category.route)
-//                }
                 ) {
                 Text("Welcome")
             }
@@ -83,11 +69,10 @@ fun openCategoryView(context: Context) {
     context.startActivity(intent)
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     RecipeApplicationTheme {
-        Welcome(context = LocalContext.current, navController = rememberNavController())
+        Welcome(context = LocalContext.current)
     }
 }

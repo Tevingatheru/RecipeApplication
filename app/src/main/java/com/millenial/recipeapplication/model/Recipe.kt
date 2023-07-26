@@ -3,7 +3,6 @@ package com.millenial.recipeapplication.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 class Recipe(
     val name: String,
@@ -14,7 +13,4 @@ class Recipe(
     val categoryType: CategoryTypes
     ): Parcelable{
 
-
 }
-
-

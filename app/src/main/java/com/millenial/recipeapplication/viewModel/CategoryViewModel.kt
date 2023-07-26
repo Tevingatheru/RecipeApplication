@@ -1,10 +1,8 @@
 package com.millenial.recipeapplication.viewModel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.millenial.recipeapplication.model.Category
 import com.millenial.recipeapplication.model.categoryList
 

@@ -1,6 +1,5 @@
 package com.millenial.recipeapplication.model
 
-
 import com.millenial.recipeapplication.R
 
 fun categoryList(): List<Category> {

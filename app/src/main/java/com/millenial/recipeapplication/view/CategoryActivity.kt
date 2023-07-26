@@ -32,13 +32,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.millenial.recipeapplication.SetUp
 import com.millenial.recipeapplication.model.Category
-import com.millenial.recipeapplication.model.categoryList
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.TAG
@@ -50,7 +46,6 @@ class CategoryActivity : ComponentActivity() {
         const val TAG: String= "CategoryActivity"
         const val categoryVarName = "CATEGORY_NAME"
     }
-    lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,9 +53,6 @@ class CategoryActivity : ComponentActivity() {
 
         setContent {
             RecipeApplicationTheme {
-                navController = rememberNavController()
-                SetUp(navController = navController)
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -97,42 +89,30 @@ fun View() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCard(category: Category, onClick: () -> Unit) {
-    MaterialTheme (
-        colorScheme = MaterialTheme.colorScheme.copy(
-            primary = Purple40,
-            background = Color.Gray,
-        )
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        onClick = onClick
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            onClick = onClick
-            ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            category.image?.let { image ->
+                Image(
+                    painter = painterResource(id = image),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(8.dp)
                 )
-                {
-                    category.image?.let { image ->
-                        Image(
-                            painter = painterResource(id = image),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(48.dp)
-                                .padding(8.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.padding(20.dp))
-                    Text(
-                        text = category.name.type,
-                        color = Color.Black,
-                        )
-                }
             }
+            Spacer(modifier = Modifier.padding(20.dp))
+            Text(
+                text = category.name.type,
+                color = Color.Black,
+            )
         }
     }
 }
