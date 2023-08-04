@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,38 +27,48 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
 import com.millenial.recipeapplication.R
 import com.millenial.recipeapplication.model.CategoryTypes
 import com.millenial.recipeapplication.model.Ingredient
 import com.millenial.recipeapplication.model.Instruction
 import com.millenial.recipeapplication.model.Recipe
 import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
+import com.millenial.recipeapplication.model.room.RecipeDatabase
+import com.millenial.recipeapplication.model.room.RecipeRepository
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.viewModel.RecipeDetailViewModel
+import com.millenial.recipeapplication.viewModel.RepositoryViewModelFactory
 
 class RecipeDetailActivity : ComponentActivity() {
     companion object {
         const val TAG: String = "RecipeDetailActivity"
     }
 
-    private val recipeDetailViewModel by viewModels<RecipeDetailViewModel>()
+    private lateinit var recipeDetailViewModel: RecipeDetailViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val recipe: Recipe? = intent.getParcelableExtra<Recipe>("RECIPE", Recipe::class.java)
 
-        val recipeWithInstructionAndIngredients = RecipeWithInstructionAndIngredients(
-            recipe = recipe, instructions = null, ingredients =  null
-        )
+        val recipeRepository = RecipeRepository(RecipeDatabase.getDatabase(this).recipeDao())
+        val viewModelFactory = RepositoryViewModelFactory(recipeRepository)
+        recipeDetailViewModel = ViewModelProvider(this, viewModelFactory).get(RecipeDetailViewModel::class.java)
+
+        val recipeWithInstructionAndIngredients = getRecipeWithInstructionAndIngredientsByRecipe(recipe)
         recipeDetailViewModel.setRecipe(recipeWithInstructionAndIngredients)
         setContent {
             RecipeApplicationTheme {
                 RecipeDetailScreen(recipeDetailViewModel)
             }
         }
+    }
+
+    private fun getRecipeWithInstructionAndIngredientsByRecipe(recipe: Recipe?): RecipeWithInstructionAndIngredients {
+        val recipeCode = recipe?.code!!
+        return recipeDetailViewModel.getRecipeWithInstructionAndIngredientsById(recipeCode)!!
     }
 }
 
@@ -87,33 +96,32 @@ fun RecipeDetailScreen(recipeViewModel: RecipeDetailViewModel) {
                 .padding(5.dp),
         ) {
             Card {
-                RecipeContent(recipe = recipe)
+                RecipeContent(recipeWithInstructionAndIngredients = recipe)
             }
         }
     }
 }
 
-
 @Composable
-fun RecipeContent(recipe: RecipeWithInstructionAndIngredients?) {
-    if (recipe != null) {
+fun RecipeContent(recipeWithInstructionAndIngredients: RecipeWithInstructionAndIngredients?) {
+    if (recipeWithInstructionAndIngredients != null) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                RecipeImage(recipe.recipe!!.image)
+                RecipeImage(recipeWithInstructionAndIngredients.recipe!!.image)
             }
             item {
                 IngredientTitle()
             }
 
-            items(recipe.ingredients!!) { ingredient ->
+            items(recipeWithInstructionAndIngredients.ingredients!!) { ingredient ->
                 RecipeIngredientItem(ingredient)
             }
             item {
                 InstructionTitle()
             }
-            items(recipe.instructions!!) { instruction ->
+            items(recipeWithInstructionAndIngredients.instructions!!) { instruction ->
                 RecipeInstructionItem(instruction)
             }
         }
@@ -201,7 +209,8 @@ fun PreviewRecipeDetailScreen() {
             Ingredient(amount = 1.0, description = "sliced tomatoes, microgreens, hot sauce")
         )
     )
-    val recipeViewModel = RecipeDetailViewModel()
+    val recipeViewModel = RecipeDetailViewModel(RecipeRepository(RecipeDatabase.getDatabase(
+        LocalContext.current).recipeDao()))
     recipeViewModel.setRecipe(recipe)
     RecipeApplicationTheme {
         RecipeDetailScreen(

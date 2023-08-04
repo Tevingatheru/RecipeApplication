@@ -15,6 +15,6 @@ data class RecipeWithInstructionAndIngredients(
         parentColumn = "id",
         entityColumn = "id"
     )
-    var ingredients: List<Ingredient>?,
+    var ingredients: List<Ingredient>?
 
-    )
+)

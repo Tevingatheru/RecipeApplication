@@ -56,4 +56,11 @@ class RecipeRepository(
         recipeDao.saveAll(recipes = recipes)
         Log.d(TAG, "Recipes Inserted")
     }
+
+    @WorkerThread
+    suspend fun getRecipeWithInstructionAndIngredientsById(recipeCode: String): RecipeWithInstructionAndIngredients? {
+        return withContext(Dispatchers.IO){
+            recipeDao.getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode)
+        }
+    }
 }
