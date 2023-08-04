@@ -72,15 +72,10 @@ class RecipeActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModel = RecipeViewModel()
-                    val recipes: List<RecipeWithInstructionAndIngredients> = viewModel
+                    val recipes: List<Recipe> = viewModel
                         .getRecipes(categoryName = RecipeActivity.categoryName)
-
-                    val recipesList: List<Recipe> = ArrayList()
-
-                    recipes.forEach{
-                        recipesList.plus(it.recipe)
-                    }
-                    ListView(recipesList)
+                    
+                    ListView(recipes)
                 }
             }
         }
@@ -210,6 +205,6 @@ class RecipeDetailActivityContract : ActivityResultContract<Recipe, Unit>() {
 @Composable
 fun Preview() {
     RecipeApplicationTheme {
-//        ListView(recipeListForBreakfast())
+        ListView(recipeListForBreakfast().map { it.recipe!! })
     }
 }

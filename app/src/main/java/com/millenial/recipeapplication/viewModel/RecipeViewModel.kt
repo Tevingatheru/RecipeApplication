@@ -10,20 +10,20 @@ import com.millenial.recipeapplication.model.recipeListForSupper
 
 class RecipeViewModel() : ViewModel() {
 
-    fun getRecipes(categoryName: String): List<RecipeWithInstructionAndIngredients> {
-        var recipes: List<RecipeWithInstructionAndIngredients> = ArrayList()
+    fun getRecipes(categoryName: String): List<Recipe> {
+        var recipes: List<Recipe> = ArrayList()
 
         when (categoryName) {
             CategoryTypes.BREAKFAST.type -> {
-                recipes = recipeListForBreakfast()
+                recipes = recipeListForBreakfast().map { it.recipe!! }
             }
 
             CategoryTypes.LUNCH.type -> {
-                recipes = recipeListForLunch()
+                recipes = recipeListForLunch().map { it.recipe!! }
             }
 
             CategoryTypes.SUPPER.type -> {
-                recipes = recipeListForSupper()
+                recipes = recipeListForSupper().map { it.recipe!! }
             }
         }
         return recipes
