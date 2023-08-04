@@ -7,8 +7,8 @@ fun categoryList(): List<Category> {
     val lunch = R.drawable.lunch
     val supper = R.drawable.supper
     return listOf(
-        Category(CategoryTypes.BREAKFAST, breakfast),
-        Category(CategoryTypes.LUNCH, lunch),
-        Category(CategoryTypes.SUPPER, supper)
+        Category(name = CategoryTypes.BREAKFAST, image = breakfast),
+        Category(name = CategoryTypes.LUNCH, image = lunch),
+        Category(name = CategoryTypes.SUPPER, image = supper)
     )
 }

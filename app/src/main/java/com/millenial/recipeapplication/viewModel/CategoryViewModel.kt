@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.millenial.recipeapplication.model.Category
 import com.millenial.recipeapplication.model.categoryList
+import com.millenial.recipeapplication.model.room.CategoryRepository
 
-class CategoryViewModel(): ViewModel() {
+class CategoryViewModel(
+    private val categoryRepository: CategoryRepository
+): ViewModel() {
     // List of categories (recipes)
     val categories: List<Category> = categoryList()
 
