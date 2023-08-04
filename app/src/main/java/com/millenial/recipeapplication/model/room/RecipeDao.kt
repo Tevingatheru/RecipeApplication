@@ -26,5 +26,5 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE code = :recipeCode")
     @Transaction
     fun getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode: String)
-    : RecipeWithInstructionAndIngredients?
+            : RecipeWithInstructionAndIngredients?
 }

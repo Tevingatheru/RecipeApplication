@@ -1,8 +1,9 @@
-package com.millenial.recipeapplication.viewModel
+package com.millenial.recipeapplication.viewModel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.millenial.recipeapplication.model.room.RecipeRepository
+import com.millenial.recipeapplication.viewModel.RecipeDetailViewModel
 
 class RepositoryViewModelFactory(
     private val recipeRepository: RecipeRepository

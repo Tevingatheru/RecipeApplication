@@ -39,7 +39,7 @@ import com.millenial.recipeapplication.model.room.RecipeRepository
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.viewModel.RecipeDetailViewModel
-import com.millenial.recipeapplication.viewModel.RepositoryViewModelFactory
+import com.millenial.recipeapplication.viewModel.factory.RepositoryViewModelFactory
 
 class RecipeDetailActivity : ComponentActivity() {
     companion object {

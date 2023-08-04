@@ -35,19 +35,16 @@ class RecipeRepository(
     }
 
     private suspend fun insertInstruction(recipeList: ArrayList<RecipeWithInstructionAndIngredients>) {
-        val instructions: List<Instruction> = ArrayList()
-        recipeList.mapIndexed { index, it -> it.instructions }.forEach { instruction ->
-            instructions.plus(instruction)
+        var instructions: List<Instruction> = ArrayList()
+        recipeList.map { it -> it.instructions }.forEach { instruction ->
+            instructions = instructions.plus(instruction!!)
         }
 
         recipeDao.saveRecipeInstructions(instruction = instructions)
     }
 
     private suspend fun insertIngredients(recipeList: ArrayList<RecipeWithInstructionAndIngredients>) {
-        val ingredients: List<Ingredient> = ArrayList()
-        recipeList.mapIndexed { index, it -> it.ingredients }.forEach { ingredient ->
-            ingredients.plus(ingredient)
-        }
+        val ingredients: List<Ingredient> = recipeList.flatMap { it.ingredients ?: emptyList() }
 
         recipeDao.saveRecipeIngredients(ingredients = ingredients)
     }

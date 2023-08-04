@@ -61,7 +61,7 @@ class RecipeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        categoryName = intent.getStringExtra(CategoryActivity.categoryVarName)!!
+        (intent.getStringExtra(CategoryActivity.categoryVarName) ?: categoryName).also { categoryName = it }
 
 
         setContent {
@@ -74,7 +74,7 @@ class RecipeActivity : ComponentActivity() {
                     val viewModel = RecipeViewModel()
                     val recipes: List<Recipe> = viewModel
                         .getRecipes(categoryName = RecipeActivity.categoryName)
-                    
+
                     ListView(recipes)
                 }
             }

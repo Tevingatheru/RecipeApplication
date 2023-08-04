@@ -7,13 +7,13 @@ data class RecipeWithInstructionAndIngredients(
     @Embedded
     var recipe: Recipe?,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "id"
+        parentColumn = "recipeId",
+        entityColumn = "instructionId"
     )
     var instructions: List<Instruction>?,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "id"
+        parentColumn = "recipeId",
+        entityColumn = "ingredientId"
     )
     var ingredients: List<Ingredient>?
 
