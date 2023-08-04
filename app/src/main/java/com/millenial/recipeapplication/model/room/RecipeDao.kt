@@ -49,6 +49,7 @@ interface RecipeDao {
      * @param recipeCode Code of the recipe to retrieve.
      * @return RecipeWithInstructionAndIngredients object containing recipe, instructions, and ingredients.
      */
+    //TODO: fetch full list of instructions and ingredients
     @Query("SELECT * FROM recipes WHERE code = :recipeCode")
     @Transaction
     fun getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode: String)

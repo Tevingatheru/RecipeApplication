@@ -51,6 +51,7 @@ class RecipeRepository(
      */
     @WorkerThread
     suspend fun getRecipeWithInstructionAndIngredientsByCode(recipeCode: String): RecipeWithInstructionAndIngredients? {
+        //TODO: verify if records exist before insertion
         return withContext(Dispatchers.IO){
             recipeDao.getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode)
         }
