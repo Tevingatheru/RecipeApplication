@@ -3,7 +3,6 @@ package com.millenial.recipeapplication.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -37,10 +36,12 @@ import com.millenial.recipeapplication.model.CategoryViewModelFactory
 import com.millenial.recipeapplication.model.room.CategoryRepository
 import com.millenial.recipeapplication.model.room.RecipeDatabase
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
-import com.millenial.recipeapplication.view.CategoryActivity.Companion.TAG
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.categoryVarName
 import com.millenial.recipeapplication.viewModel.CategoryViewModel
 
+/**
+ * Activity that displays a list of categories using Jetpack Compose.
+ */
 class CategoryActivity : ComponentActivity() {
     companion object {
         const val TAG: String= "CategoryActivity"
@@ -56,15 +57,18 @@ class CategoryActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    View()
+                    CategoryList()
                 }
             }
         }
     }
 }
 
+/**
+ * Composable function that displays a list of categories using a LazyColumn.
+ */
 @Composable
-fun View() {
+fun CategoryList() {
 
     val launcher = rememberLauncherForActivityResult(
         contract = RecipeActivityContract()
@@ -72,14 +76,10 @@ fun View() {
 
     }
 
-    val viewModel: CategoryViewModel = viewModel(factory =
-    CategoryViewModelFactory(categoryRepository = CategoryRepository(
-        RecipeDatabase.getDatabase(context = LocalContext.current).categoryDao())))
-    val categories: List<Category> = viewModel.getCategories()
+    val categories: List<Category> = generateCategories()
 
     LazyColumn {
         items(categories) { category ->
-            Log.d(TAG, "ids: ${category.id.toString()}")
             CategoryCard(
                 category = category,
                 onClick = {
@@ -89,6 +89,30 @@ fun View() {
     }
 }
 
+/**
+ * Generates a list of categories using a ViewModel and repository.
+ *
+ * This function uses a [CategoryViewModel] to fetch a list of [Category] items
+ * from a [CategoryRepository].
+ *
+ * @return A list of categories.
+ */
+@Composable
+private fun generateCategories(): List<Category> {
+    val viewModel: CategoryViewModel = viewModel(
+        factory =
+        CategoryViewModelFactory(
+            categoryRepository = CategoryRepository(
+                RecipeDatabase.getDatabase(context = LocalContext.current).categoryDao()
+            )
+        )
+    )
+    return viewModel.categories
+}
+
+/**
+ * Composable function that displays a single category as a card.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCard(category: Category, onClick: () -> Unit) {
@@ -120,6 +144,9 @@ fun CategoryCard(category: Category, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Activity result contract for launching the RecipeActivity.
+ */
 class RecipeActivityContract : ActivityResultContract<String, Unit>() {
     override fun createIntent(context: Context, input: String): Intent {
         return Intent(context, RecipeActivity::class.java).apply {
@@ -137,7 +164,7 @@ class RecipeActivityContract : ActivityResultContract<String, Unit>() {
 @Composable
 fun GreetingPreview2() {
     RecipeApplicationTheme {
-        View()
+        CategoryList()
     }
 }
 

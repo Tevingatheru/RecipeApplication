@@ -9,17 +9,36 @@ import com.millenial.recipeapplication.model.Ingredient
 import com.millenial.recipeapplication.model.Instruction
 import com.millenial.recipeapplication.model.Recipe
 
+/**
+ * Room database for managing recipe-related data.
+ *
+ * This class defines the database using Room annotations. It provides access to the [CategoryDao]
+ * interface for performing operations related to Category data.
+ */
 @Database(
     entities = [Category::class],
     version = 1,
     exportSchema = false)
 abstract class RecipeDatabase : RoomDatabase() {
+    /**
+     * Provides access to the Category data operations.
+     *
+     * @return An instance of [CategoryDao].
+     */
     abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile
         private var INSTANCE: RecipeDatabase? = null
 
+        /**
+         * Retrieves an instance of [RecipeDatabase].
+         *
+         * This method returns a singleton instance of [RecipeDatabase], creating it if necessary.
+         *
+         * @param context The application context.
+         * @return An instance of [RecipeDatabase].
+         */
         fun getDatabase(context : Context): RecipeDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
