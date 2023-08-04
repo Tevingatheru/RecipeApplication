@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.millenial.recipeapplication.model.room.CategoryRepository
 import com.millenial.recipeapplication.model.room.RecipeDatabase
+import com.millenial.recipeapplication.model.room.RecipeRepository
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.ui.theme.Purple40
 import kotlinx.coroutines.launch
@@ -45,9 +46,11 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun prepareDatabase() {
         Log.d(TAG, "Prepare database")
-        val categoryRepository = CategoryRepository(
-            RecipeDatabase.getDatabase(this).categoryDao())
+        val database = RecipeDatabase.getDatabase(this)
+        val categoryRepository = CategoryRepository(database.categoryDao())
         categoryRepository.insertAll()
+        val recipeRepository = RecipeRepository(database.recipeDao())
+        recipeRepository.insertAll()
     }
 }
 

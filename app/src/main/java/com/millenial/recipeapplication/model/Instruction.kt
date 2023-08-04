@@ -1,11 +1,16 @@
 package com.millenial.recipeapplication.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Instruction(
-    val step: Int,
-    val instruction: String
+@Entity(tableName = "instructions")
+data class Instruction(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long? = null,
+    var step: Int? = null,
+    var instruction: String? = null
 ) : Parcelable {
 }

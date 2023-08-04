@@ -12,11 +12,11 @@ import com.millenial.recipeapplication.model.Recipe
 /**
  * Room database for managing recipe-related data.
  *
- * This class defines the database using Room annotations. It provides access to the [CategoryDao]
+ * This class defines the database using Room annotations.
  * interface for performing operations related to Category data.
  */
 @Database(
-    entities = [Category::class],
+    entities = [Category::class, Recipe::class, Ingredient::class, Instruction::class],
     version = 1,
     exportSchema = false)
 abstract class RecipeDatabase : RoomDatabase() {
@@ -26,6 +26,13 @@ abstract class RecipeDatabase : RoomDatabase() {
      * @return An instance of [CategoryDao].
      */
     abstract fun categoryDao(): CategoryDao
+
+    /**
+     * Provides access to the Recipe data operations.
+     *
+     * @return An instance of [RecipeDao].
+     */
+    abstract fun recipeDao(): RecipeDao
 
     companion object {
         @Volatile

@@ -34,6 +34,7 @@ import com.millenial.recipeapplication.model.CategoryTypes
 import com.millenial.recipeapplication.model.Ingredient
 import com.millenial.recipeapplication.model.Instruction
 import com.millenial.recipeapplication.model.Recipe
+import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.viewModel.RecipeDetailViewModel
@@ -50,7 +51,10 @@ class RecipeDetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val recipe: Recipe? = intent.getParcelableExtra<Recipe>("RECIPE", Recipe::class.java)
 
-        recipeDetailViewModel.setRecipe(recipe)
+        val recipeWithInstructionAndIngredients = RecipeWithInstructionAndIngredients(
+            recipe = recipe, instructions = null, ingredients =  null
+        )
+        recipeDetailViewModel.setRecipe(recipeWithInstructionAndIngredients)
         setContent {
             RecipeApplicationTheme {
                 RecipeDetailScreen(recipeDetailViewModel)
@@ -63,8 +67,8 @@ class RecipeDetailActivity : ComponentActivity() {
 @Composable
 fun RecipeDetailScreen(recipeViewModel: RecipeDetailViewModel) {
     val context = LocalContext.current
-    val recipe: Recipe? = recipeViewModel.recipe.value
-    val recipeName = recipe?.name ?: "Recipe Detail"
+    val recipe: RecipeWithInstructionAndIngredients? = recipeViewModel.recipe.value
+    val recipeName: String = recipe?.recipe!!.name ?: "Recipe Detail"
 
     Column {
         TopAppBar(
@@ -91,25 +95,25 @@ fun RecipeDetailScreen(recipeViewModel: RecipeDetailViewModel) {
 
 
 @Composable
-fun RecipeContent(recipe: Recipe?) {
+fun RecipeContent(recipe: RecipeWithInstructionAndIngredients?) {
     if (recipe != null) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                RecipeImage(recipe.image)
+                RecipeImage(recipe.recipe!!.image)
             }
             item {
                 IngredientTitle()
             }
 
-            items(recipe.ingredients) { ingredient ->
+            items(recipe.ingredients!!) { ingredient ->
                 RecipeIngredientItem(ingredient)
             }
             item {
                 InstructionTitle()
             }
-            items(recipe.instructions) { instruction ->
+            items(recipe.instructions!!) { instruction ->
                 RecipeInstructionItem(instruction)
             }
         }
@@ -148,7 +152,7 @@ private fun IngredientTitle() {
 @Composable
 fun RecipeIngredientItem(ingredient: Ingredient) {
     Text(
-        text = "${ingredient.amount ?: ""} ${requiredString(ingredient.required)} ${ingredient.description}" ,
+        text = "${ingredient.amount ?: ""} ${requiredString(ingredient.required!!)} ${ingredient.description}" ,
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(5.dp)
     )
@@ -166,7 +170,7 @@ private fun requiredString(required: Boolean): String {
 @Composable
 fun RecipeInstructionItem(instruction: Instruction) {
     Text(
-        text = instruction.instruction,
+        text = instruction.instruction!!,
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(5.dp)
     )
@@ -175,31 +179,27 @@ fun RecipeInstructionItem(instruction: Instruction) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewRecipeDetailScreen() {
-    val recipe = Recipe(
-        name = "Avocado Toast with Poached Eggs",
-        code = "B01",
-        image = R.drawable.avocado_toast_with_poached_eggs,
+    val recipe = RecipeWithInstructionAndIngredients(
+        recipe = Recipe(
+            name = "Avocado Toast with Poached Eggs",
+            code = "B01",
+            image = R.drawable.avocado_toast_with_poached_eggs,
+            categoryType = CategoryTypes.BREAKFAST
+        ),
         instructions = listOf(
-            Instruction(0, "Toast the bread slices until golden brown."),
-            Instruction(
-                1,
-                "While the bread is toasting, slice the avocado and mash it with a fork in a bowl. Season with salt and pepper."
-            ),
-            Instruction(
-                2,
-                "Poach the eggs in boiling water for about 3-4 minutes until the whites are set but the yolks are still runny."
-            ),
-            Instruction(3, "Spread the mashed avocado on each toast and top with a poached egg."),
-            Instruction(4, "Add optional toppings if desired and serve immediately.")
+            Instruction(step = 0, instruction = "Toast the bread slices until golden brown."),
+            Instruction(step = 1, instruction = "While the bread is toasting, slice the avocado and mash it with a fork in a bowl. Season with salt and pepper."),
+            Instruction(step = 2, instruction = "Poach the eggs in boiling water for about 3-4 minutes until the whites are set but the yolks are still runny."),
+            Instruction(step = 3, instruction = "Spread the mashed avocado on each toast and top with a poached egg."),
+            Instruction(step = 4, instruction = "Add optional toppings if desired and serve immediately.")
         ),
         ingredients = listOf(
-            Ingredient(2.0, "slices of whole-grain bread"),
-            Ingredient(1.0, "ripe avocado"),
-            Ingredient(2.0, "large eggs"),
-            Ingredient(1.0, "Salt and pepper to taste"),
-            Ingredient(1.0, "sliced tomatoes, microgreens, hot sauce")
-        ),
-        categoryType = CategoryTypes.LUNCH
+            Ingredient(amount = 2.0, description = "slices of whole-grain bread"),
+            Ingredient(amount = 1.0, description = "ripe avocado"),
+            Ingredient(amount = 2.0, description = "large eggs"),
+            Ingredient(amount = 1.0, description = "Salt and pepper to taste"),
+            Ingredient(amount = 1.0, description = "sliced tomatoes, microgreens, hot sauce")
+        )
     )
     val recipeViewModel = RecipeDetailViewModel()
     recipeViewModel.setRecipe(recipe)

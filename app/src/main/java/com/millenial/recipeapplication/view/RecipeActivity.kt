@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.millenial.recipeapplication.model.Recipe
+import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
 import com.millenial.recipeapplication.model.recipeListForBreakfast
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.view.RecipeActivity.Companion.TAG
@@ -71,9 +72,15 @@ class RecipeActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModel = RecipeViewModel()
-                    val recipes: List<Recipe> = viewModel.getRecipes(categoryName = RecipeActivity.categoryName)
+                    val recipes: List<RecipeWithInstructionAndIngredients> = viewModel
+                        .getRecipes(categoryName = RecipeActivity.categoryName)
 
-                    ListView(recipes)
+                    val recipesList: List<Recipe> = ArrayList()
+
+                    recipes.forEach{
+                        recipesList.plus(it.recipe)
+                    }
+                    ListView(recipesList)
                 }
             }
         }
@@ -90,10 +97,10 @@ fun ListView(recipes: List<Recipe>) {
     }
 
     val launcher = rememberLauncherForActivityResult(
-            contract = RecipeDetailActivityContract()
-        ) {
+        contract = RecipeDetailActivityContract()
+    ) {
 
-        }
+    }
     val context = LocalContext.current
     val title = RecipeActivity.categoryName + " List"
 
@@ -203,6 +210,6 @@ class RecipeDetailActivityContract : ActivityResultContract<Recipe, Unit>() {
 @Composable
 fun Preview() {
     RecipeApplicationTheme {
-        ListView(recipeListForBreakfast())
+//        ListView(recipeListForBreakfast())
     }
 }
