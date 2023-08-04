@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.millenial.recipeapplication.model.room.CategoryRepository
+import com.millenial.recipeapplication.model.repository.CategoryRepository
 import com.millenial.recipeapplication.model.room.RecipeDatabase
-import com.millenial.recipeapplication.model.room.RecipeRepository
+import com.millenial.recipeapplication.model.repository.RecipeRepository
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.ui.theme.Purple40
 import kotlinx.coroutines.launch

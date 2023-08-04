@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
-import com.millenial.recipeapplication.model.room.RecipeRepository
+import com.millenial.recipeapplication.model.repository.RecipeRepository
 import kotlinx.coroutines.runBlocking
 
 class RecipeDetailViewModel(
@@ -17,6 +17,6 @@ class RecipeDetailViewModel(
         _recipe.value = recipeWithInstructionAndIngredients!!
     }
     fun getRecipeWithInstructionAndIngredientsById(recipeCode: String): RecipeWithInstructionAndIngredients? {
-        return runBlocking { recipeRepository.getRecipeWithInstructionAndIngredientsById(recipeCode) }
+        return runBlocking { recipeRepository.getRecipeWithInstructionAndIngredientsByCode(recipeCode) }
     }
 }

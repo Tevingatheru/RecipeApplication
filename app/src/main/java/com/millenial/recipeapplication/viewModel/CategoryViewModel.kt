@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.millenial.recipeapplication.model.Category
-import com.millenial.recipeapplication.model.room.CategoryRepository
+import com.millenial.recipeapplication.model.repository.CategoryRepository
 import kotlinx.coroutines.runBlocking
 
 class CategoryViewModel(

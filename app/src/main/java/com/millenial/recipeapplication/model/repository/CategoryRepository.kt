@@ -1,14 +1,12 @@
-package com.millenial.recipeapplication.model.room
+package com.millenial.recipeapplication.model.repository
 
 import android.util.Log
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 
 import com.millenial.recipeapplication.model.Category
 import com.millenial.recipeapplication.model.categoryList
+import com.millenial.recipeapplication.model.room.CategoryDao
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 /**

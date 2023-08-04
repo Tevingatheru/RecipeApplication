@@ -35,7 +35,7 @@ import com.millenial.recipeapplication.model.Instruction
 import com.millenial.recipeapplication.model.Recipe
 import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
 import com.millenial.recipeapplication.model.room.RecipeDatabase
-import com.millenial.recipeapplication.model.room.RecipeRepository
+import com.millenial.recipeapplication.model.repository.RecipeRepository
 import com.millenial.recipeapplication.ui.theme.Purple40
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.viewModel.RecipeDetailViewModel
@@ -209,8 +209,10 @@ fun PreviewRecipeDetailScreen() {
             Ingredient(amount = 1.0, description = "sliced tomatoes, microgreens, hot sauce")
         )
     )
-    val recipeViewModel = RecipeDetailViewModel(RecipeRepository(RecipeDatabase.getDatabase(
-        LocalContext.current).recipeDao()))
+    val recipeViewModel = RecipeDetailViewModel(
+        RecipeRepository(RecipeDatabase.getDatabase(
+        LocalContext.current).recipeDao())
+    )
     recipeViewModel.setRecipe(recipe)
     RecipeApplicationTheme {
         RecipeDetailScreen(

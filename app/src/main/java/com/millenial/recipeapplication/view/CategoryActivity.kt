@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.millenial.recipeapplication.model.Category
 import com.millenial.recipeapplication.viewModel.factory.CategoryViewModelFactory
-import com.millenial.recipeapplication.model.room.CategoryRepository
+import com.millenial.recipeapplication.model.repository.CategoryRepository
 import com.millenial.recipeapplication.model.room.RecipeDatabase
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.categoryVarName

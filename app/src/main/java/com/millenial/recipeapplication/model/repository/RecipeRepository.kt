@@ -1,4 +1,4 @@
-package com.millenial.recipeapplication.model.room
+package com.millenial.recipeapplication.model.repository
 
 import android.util.Log
 import androidx.annotation.WorkerThread
@@ -9,9 +9,15 @@ import com.millenial.recipeapplication.model.RecipeWithInstructionAndIngredients
 import com.millenial.recipeapplication.model.recipeListForBreakfast
 import com.millenial.recipeapplication.model.recipeListForLunch
 import com.millenial.recipeapplication.model.recipeListForSupper
+import com.millenial.recipeapplication.model.room.RecipeDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Repository class responsible for managing data operations related to recipes and their associated data.
+ *
+ * @param recipeDao The Data Access Object (DAO) for recipes, ingredients, and instructions.
+ */
 class RecipeRepository(
     private val recipeDao: RecipeDao
 ) {
@@ -19,6 +25,9 @@ class RecipeRepository(
         private const val TAG = "RecipeRepository"
     }
 
+    /**
+     * Insert a list of recipes along with their associated data into the database.
+     */
     @WorkerThread
     suspend fun insertAll() {
         val recipeList = ArrayList<RecipeWithInstructionAndIngredients>()
@@ -31,6 +40,19 @@ class RecipeRepository(
             insertRecipes(recipes)
             insertIngredients(recipeList)
             insertInstruction(recipeList)
+        }
+    }
+
+    /**
+     * Retrieve a recipe along with its associated instructions and ingredients by recipe code.
+     *
+     * @param recipeCode Code of the recipe to retrieve.
+     * @return RecipeWithInstructionAndIngredients object containing recipe, instructions, and ingredients.
+     */
+    @WorkerThread
+    suspend fun getRecipeWithInstructionAndIngredientsByCode(recipeCode: String): RecipeWithInstructionAndIngredients? {
+        return withContext(Dispatchers.IO){
+            recipeDao.getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode)
         }
     }
 
@@ -52,12 +74,5 @@ class RecipeRepository(
     private suspend fun insertRecipes(recipes: List<Recipe>) {
         recipeDao.saveAll(recipes = recipes)
         Log.d(TAG, "Recipes Inserted")
-    }
-
-    @WorkerThread
-    suspend fun getRecipeWithInstructionAndIngredientsById(recipeCode: String): RecipeWithInstructionAndIngredients? {
-        return withContext(Dispatchers.IO){
-            recipeDao.getRecipeWithInstructionAndIngredientsByRecipeId(recipeCode)
-        }
     }
 }
