@@ -198,7 +198,8 @@ fun PreviewRecipeDetailScreen() {
             Ingredient(2.0, "large eggs"),
             Ingredient(1.0, "Salt and pepper to taste"),
             Ingredient(1.0, "sliced tomatoes, microgreens, hot sauce")
-        ), CategoryTypes.LUNCH
+        ),
+        categoryType = CategoryTypes.LUNCH
     )
     val recipeViewModel = RecipeDetailViewModel()
     recipeViewModel.setRecipe(recipe)
