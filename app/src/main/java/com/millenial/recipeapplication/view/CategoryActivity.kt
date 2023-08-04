@@ -3,6 +3,7 @@ package com.millenial.recipeapplication.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -36,6 +37,7 @@ import com.millenial.recipeapplication.model.CategoryViewModelFactory
 import com.millenial.recipeapplication.model.room.CategoryRepository
 import com.millenial.recipeapplication.model.room.RecipeDatabase
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
+import com.millenial.recipeapplication.view.CategoryActivity.Companion.TAG
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.categoryVarName
 import com.millenial.recipeapplication.viewModel.CategoryViewModel
 
@@ -64,19 +66,20 @@ class CategoryActivity : ComponentActivity() {
 @Composable
 fun View() {
 
-    val viewModel: CategoryViewModel = viewModel(factory =
-    CategoryViewModelFactory(categoryRepository = CategoryRepository(
-        RecipeDatabase.getDatabase(context = LocalContext.current).categoryDao())))
-    val categories: List<Category> = viewModel.categories
-
     val launcher = rememberLauncherForActivityResult(
         contract = RecipeActivityContract()
     ) {
 
     }
 
+    val viewModel: CategoryViewModel = viewModel(factory =
+    CategoryViewModelFactory(categoryRepository = CategoryRepository(
+        RecipeDatabase.getDatabase(context = LocalContext.current).categoryDao())))
+    val categories: List<Category> = viewModel.getCategories()
+
     LazyColumn {
         items(categories) { category ->
+            Log.d(TAG, "ids: ${category.id.toString()}")
             CategoryCard(
                 category = category,
                 onClick = {

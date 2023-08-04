@@ -22,7 +22,7 @@ class CategoryRepository(
 
     @WorkerThread
     suspend fun insertAll() {
-        if (this.isEmpty()) {
+        if (!this.isEmpty()) {
             withContext(Dispatchers.IO) {
                 categoryDao.saveAll(categoryList())
                 Log.d(TAG, "Insertion completed")
