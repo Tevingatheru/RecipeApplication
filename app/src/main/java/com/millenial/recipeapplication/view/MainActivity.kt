@@ -3,6 +3,7 @@ package com.millenial.recipeapplication.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -17,21 +18,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.millenial.recipeapplication.model.room.CategoryRepository
+import com.millenial.recipeapplication.model.room.RecipeDatabase
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
 import com.millenial.recipeapplication.ui.theme.Purple40
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
     companion object {
-        const val TAG = "Main"
+        const val TAG = "MainActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        runBlocking {
+            launch { prepareDatabase() }
+        }
+
         setContent {
             RecipeApplicationTheme {
                 Welcome(this)
             }
         }
+    }
+
+    private suspend fun prepareDatabase() {
+        Log.d(TAG, "Prepare database")
+        val categoryRepository = CategoryRepository(
+            RecipeDatabase.getDatabase(this).categoryDao())
+        categoryRepository.insertAll()
     }
 }
 

@@ -8,12 +8,13 @@ import androidx.lifecycle.MutableLiveData
 import com.millenial.recipeapplication.model.Category
 import com.millenial.recipeapplication.model.categoryList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class CategoryRepository(
     private val categoryDao: CategoryDao
 ) {
-    val allCategories: LiveData<List<Category>> = categoryDao.getAll()
+//    val allCategories: List<Category> = runBlocking { categoryDao.getAll() }
 
     companion object {
         private const val TAG = "CategoryRepository"
@@ -21,16 +22,21 @@ class CategoryRepository(
 
     @WorkerThread
     suspend fun insertAll() {
-        withContext(Dispatchers.IO) {
-            categoryDao.saveAll(categoryList())
-            Log.d(TAG, "Insertion completed")
+        if (this.isEmpty()) {
+            withContext(Dispatchers.IO) {
+                categoryDao.saveAll(categoryList())
+                Log.d(TAG, "Insertion completed")
+            }
         }
     }
 
     @WorkerThread
-    suspend fun getAll(): LiveData<List<Category>> {
+    suspend fun getAll(): List<Category> {
         Log.d(TAG, "Getting categories")
-        return categoryDao.getAll()
+
+        return withContext(Dispatchers.IO){
+            categoryDao.getAll()
+        }
     }
 
     @WorkerThread

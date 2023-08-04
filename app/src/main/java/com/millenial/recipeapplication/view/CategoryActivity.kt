@@ -26,13 +26,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.millenial.recipeapplication.model.Category
+import com.millenial.recipeapplication.model.CategoryViewModelFactory
+import com.millenial.recipeapplication.model.room.CategoryRepository
+import com.millenial.recipeapplication.model.room.RecipeDatabase
 import com.millenial.recipeapplication.ui.theme.RecipeApplicationTheme
-import com.millenial.recipeapplication.view.CategoryActivity.Companion.TAG
 import com.millenial.recipeapplication.view.CategoryActivity.Companion.categoryVarName
 import com.millenial.recipeapplication.viewModel.CategoryViewModel
 
@@ -60,7 +63,10 @@ class CategoryActivity : ComponentActivity() {
 
 @Composable
 fun View() {
-    val viewModel: CategoryViewModel = viewModel()
+
+    val viewModel: CategoryViewModel = viewModel(factory =
+    CategoryViewModelFactory(categoryRepository = CategoryRepository(
+        RecipeDatabase.getDatabase(context = LocalContext.current).categoryDao())))
     val categories: List<Category> = viewModel.categories
 
     val launcher = rememberLauncherForActivityResult(
